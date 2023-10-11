@@ -1,0 +1,41 @@
+proc randomPlacement(int $numDuplicates, float $minX, float $maxX, float $minY, float $maxY, float $minZ, float $maxZ)
+{
+    /* 
+    Requirements:
+        One or more objects must be selected in the scene.
+    Arguments:
+        int $numDuplicates: The number of duplicates created for each selected object.
+        float $minX/$maxX: Set the X range for generating random values.
+        float $minY/$maxY: Set the Y range for generating random values.
+        float $minZ/$maxZ: Set the Z range for generating random values.
+    Returns:
+        None
+    */
+    
+    string $sels[] = `ls -sl`;  // Get currently selected objects
+
+    if (size($sels) == 0)
+    {
+        error "Make a selection before running RandomPlacement();";
+    }
+
+    for ($i=0; $i<size($sels); $i++)  // Loop through each selected object
+    {
+        for($j=0; $j<$numDuplicates; $j++)  // Perform the following code block on each object, $numDuplicates times
+        {
+            string $dups[] = `duplicate -rr $sels[$i]`;  // Duplicate the indicated selected object
+            string $dup = $dups[0];  // Assign the duplicate to a string variable
+
+            // Generate random position within specified ranges
+            float $randX = `rand $minX $maxX`;
+            float $randY = `rand $minY $maxY`;
+            float $randZ = `rand $minZ $maxZ`;
+
+            // Set the position of the duplicate to the random values
+            xform -worldSpace -translation $randX $randY $randZ $dup;
+        }
+    }
+}
+
+// Usage example:
+// RandomPlacement(10, 0, 50, 0, 10, -50, 50);
