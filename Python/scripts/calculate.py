@@ -1,8 +1,6 @@
 import maya.cmds as cmds
 
 
-
-
 def calculate(num_list, oper_type):
     operator = ''
     total = 0
@@ -17,11 +15,9 @@ def calculate(num_list, oper_type):
         elif oper_type == 'divide':
             operator = '/'
 
-
-        num_str = (", ".join(map(str, num_list)))
         total = num_list.pop(0)
 
         for num in num_list:
             total = eval('total %s num' % operator)
-        return total
+        return total, operator
 
